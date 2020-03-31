@@ -46,6 +46,85 @@ app.get("/download-suppression", async (req,res)=> {
   res.send(data)
 })
 
+
+
+app.post(
+  "/api/register",
+ 
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // if there are errors
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    }
+
+    const { username, password } = req.body;
+
+    try {
+      // we want to see if the user exist
+
+      // get User's gravatar
+
+      // encrypt the password using bcrypt
+
+      // return a jsonwebtoken so that the user can be logged in immediately
+
+      let user = await User.findOne({ username });
+      if (user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User Already Exists" }] }); //bad request
+      }
+      // const avatar = gravatar.url(email, {
+      //   s: '200', // default size
+      //   r: 'pg', // rating - cant have any naked people :)
+      //   d: 'mm' // gives a default image
+      // });
+      user = new User({
+        username,
+        email: "test2@gmail.com",
+        // avatar,
+        password
+        // phone: phoneNumber
+      });
+      console.log(user);
+      // return;
+      const salt = await bcrypt.genSalt(10); // create the salt
+      user.password = await bcrypt.hash(password, salt); // to encrypt the user password
+
+      await user.save();
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: "10h" },
+        (error, token) => {
+          if (error) throw error;
+
+          res.json({ token, username: user.username });
+        }
+      );
+    } catch (e) {
+      console.error(e);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+
+
+
+
+
+
   app.post(
     '/signin',
   
