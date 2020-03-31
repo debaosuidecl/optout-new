@@ -149,7 +149,7 @@ app.get("/send-to-power", async (req, res)=> {
 async function ACCESS_HOST(phone,email) {
   return new Promise((resolve, reject) => {
     let options = {
-      url: `http://159.89.55.0:1001/api/pingoptout?phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}`,
+      url: `http://159.89.55.0:1531/api/pingoptout?phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}`,
       method: "GET",
 
     };
@@ -177,7 +177,7 @@ async function ACCESS_HOST(phone,email) {
 async function DOWNLOADSUPPRESSION() {
     return new Promise((resolve, reject) => {
       let options = {
-        url: `http://159.89.55.0:1001/api/downloadsuppression`,
+        url: `http://159.89.55.0:1531/api/downloadsuppression`,
         method: "GET",
   
       };
