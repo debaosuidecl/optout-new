@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V20</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/static/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/static/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<style>
+		 .headerme{
+        padding: 30px;
+		box-shadow: 1px 0px 14px #eee;
+		border-bottom: 1px solid #eee;
+	  }
+	  .errors p{
+		  color: red;
+		  text-align: center;
+	  }
+	  .loaderScreen{
+       width: 100%;
+       background: #fff;
+       transition: 2s;
+	   position: fixed;
+	   z-index: 100000;
+       height: 100vh;
+   }
+   .loaderScreen img{
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+   }
+	</style>
+<!--===============================================================================================-->
+</head>
+<body>
+	<div class="loaderScreen">
+        <img src="/images/spin2.gif" alt="">
+    </div>
+	  <div class="headerme">
+		<img src="/images/color.png" width="300" alt="">
+	  </div>
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-b-160 p-t-50">
+				<div class="errors">
+
+				</div>
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-43">
+						Account Login
+					</span>
+				
+					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
+						<input class="input100" type="text" id="username" name="username" required="true" placeholder="Enter your username" >
+						<!-- <span class="label-input100">Username</span> -->
+					</div>
+					
+					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
+						<input class="input100" id="pass" type="password" required="true" name="pass" placeholder="Enter your password">
+						<!-- <span class="label-input100">Password</span> -->
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" onclick="signin()">
+							Sign in
+							<img src="/images/spin.gif" width="20" style="display: none;" class="loader1" alt="">
+						</button>
+					</div>
+					
+					<!-- <div class="text-center w-full p-t-23">
+						<a href="#" class="txt1">
+							Forgot password?
+						</a>
+					</div> -->
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	
+<script>
+	     window.onload = ()=> {
+          console.log("loaded")
+        let token  = localStorage.getItem("token");
+        if(token){
+
+            setTimeout(()=> {
+
+                window.location.href = "/"
+            }, 1000)
+        } else{
+            // document.querySelector(".Greetings").innerText = `Hi there ${localStorage.getItem("username")}!. Get your updated Suppression list here`
+            document.querySelector(".loaderScreen").style.opacity = 0;
+            setTimeout(()=> {
+                document.querySelector(".loaderScreen").style.display = "none";
+            }, 2000)
+        }
+      }
+
+	document.querySelector("form").addEventListener("submit", (e)=> {
+      e.preventDefault()
+      // clickHandler()
+	})
+	function signin () {
+
+		document.querySelector(".loader1").style.display="inline-block"
+		document.querySelector(".errors").innerHTML=""
+		const username = document.querySelector("#username").value
+	const password = document.querySelector("#pass").value
+
+		console.log(username,password)
+		// return;
+		fetch("/signin", {method: "POST", headers: {
+                "Content-Type": "application/json"
+            },body: JSON.stringify({
+			username: username,
+			password: password
+		})}) // Call the fetch function passing the url of the API as a parameter
+     .then((resp) => resp.json()) 
+     .then(function(data) {
+    //    window.location.href =  "/success"
+	document.querySelector(".loader1").style.display = "none"
+    // Create and append the li's to the ul
+    console.log(data,)
+	if(data.errors){
+		
+		let	inner = ""
+		
+		for(let i=0; i < data.errors.length; i++){
+			inner+= `<p>  ${data.errors[i].msg} </p>`
+		}
+		
+		document.querySelector(".errors").innerHTML = inner
+	} else{
+		localStorage.setItem("token", data.token)
+		localStorage.setItem("username", data.username)
+		window.location.href = "/"
+	}
+  // alert("There was a problem unsubscribing - please try again later");
+  
+})
+.catch(function(errors) {
+	document.querySelector(".loader1").style.display = "none"
+	console.log(errors)
+ 
+	alert("There was a problem unsubscribing - please try again later");
+
+    // This is where you run code if the server returns any errors
+});
+	}
+</script>
+	
+	
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+</body>
+</html>

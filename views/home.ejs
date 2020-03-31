@@ -1,0 +1,178 @@
+<head>
+    <title>OPT OUT</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      *{
+        margin: 0;
+        padding: 0;
+      }
+      h1{
+        font-weight: 100;
+        color: teal
+      }
+
+      .Container{
+        /* text-align: center; */
+        padding-top: 20px;
+        margin: auto;
+        width: 90%;
+
+      }
+      nav, .headerme{
+        padding: 30px;
+        box-shadow: 1px 0px 14px #eee;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .headerme p{
+          color:rgb(13, 128, 236);
+          transition:.4s;
+          cursor: pointer;
+        }
+        .headerme p:hover{
+            transition:.4s;
+          color:rgb(228, 24, 17);
+          cursor: pointer;
+      }
+      h2{
+        font-weight: 100;
+        /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+        margin: 50px 0px 20px;
+        color: rgb(13, 128, 236);
+        font-family: arial;
+        text-align: center;
+
+      }
+      input{
+        padding: 10px;
+        border: none;
+        max-width: 800px;
+        outline: none;
+        width: 100%;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+   .loaderScreen{
+       width: 100%;
+       background: #fff;
+       transition: 2s;
+       position: fixed;
+       height: 100vh;
+   }
+   .loaderScreen img{
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+   }
+   .downloadCard{
+       width: 80%;
+       background: #fff;
+       /* box-shadow: 0px 1px 14px #eee; */
+       /* height: 400px; */
+       max-width: 900px;
+       margin: 20px auto;
+       text-align: center;
+   }
+   .Greetings {
+       font-weight: 100;
+   }
+   .downloadCard button {
+       padding: 20px;
+       border: none;
+       background: none;
+       border: 1px solid rgb(39, 43, 253);
+       transition: .3s;
+   }
+   .downloadCard button:hover {
+       transition: .3s;
+       background: rgb(39, 43, 253);
+       color: white; 
+       cursor: pointer;
+   }
+    </style>
+  </head>
+  <body>
+
+    <div class="loaderScreen">
+        <img src="/images/spin2.gif" alt="">
+    </div>
+    <!--Any html message you want to show to people while they wait the 2 seconds for the redirection.
+  
+  Can use an image here or a gif. Can be the same image as above with text on it saying loading your offer now or something.
+  
+  <img src="./images/prefetch1.jpg" /> -->
+  <div class="headerme">
+    <img src="/images/color.png" width="300" alt="">
+
+    <p onclick="logout()">Logout</p>
+  </div>
+  <div class="Container">
+    <h2 class="Greetings"></h2>
+    <div class="downloadCard">
+        <button onclick="downloadfrompowersms()">
+            DOWNLOAD SUPPRESSION LIST
+        </button>
+    </div>
+  </div>
+  
+  <script>
+      function logout(){
+          localStorage.removeItem("token")
+          localStorage.removeItem("username")
+          window.location.href = "/login"
+
+      }
+      window.onload = ()=> {
+          console.log("loaded")
+        let token  = localStorage.getItem("token");
+        if(!token){
+
+            setTimeout(()=> {
+
+                window.location.href = "/login"
+            }, 1000)
+        } else{
+            document.querySelector(".Greetings").innerText = `Hi there ${localStorage.getItem("username")}!. Get your updated Suppression list here`
+            document.querySelector(".loaderScreen").style.opacity = 0;
+            setTimeout(()=> {
+                document.querySelector(".loaderScreen").style.display = "none";
+            }, 2000)
+        }
+      }
+
+      function downloadfrompowersms (){
+        fetch("/download-suppression") // Call the fetch function passing the url of the API as a parameter
+          .then((resp) => resp.text()) 
+            .then(function(data) {
+        console.log(data)
+        var blob = new Blob([data], {
+        type: "text/plain"
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const date = new Date();
+      a.setAttribute("hidden", url);
+      a.setAttribute("href", url);
+      a.setAttribute(
+        "download",
+        `suppression_list_${new Date()}.csv`
+      );
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+})
+.catch(function(errors) {
+    console.log(errors)
+	alert("There was a problem downloading - please try again later");
+
+    // This is where you run code if the server returns any errors
+});
+      }
+  </script>
+  
+  </body>
+  
