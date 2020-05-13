@@ -1,149 +1,159 @@
 <head>
-    <title>OPT OUT</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="red" />
-    <!-- <meta -->
-    <!-- <meta name="viewport" content="width=device-width"> -->
-    <style>
-      *{
-        margin: 0;
-        padding: 0;
-      }
-      h1{
-        font-weight: 100;
-        color: teal
-      }
+  <title>OPT OUT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="red" />
+  <!-- <meta -->
+  <!-- <meta name="viewport" content="width=device-width"> -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      font-weight: 100;
+      color: teal;
+    }
 
-      .Container{
-        text-align: center;
-        padding-top: 20px;
+    .Container {
+      text-align: center;
+      padding-top: 20px;
+    }
+    nav {
+      padding: 30px;
+      box-shadow: 1px 0px 14px #eee;
+    }
+    h2 {
+      font-weight: 100;
+      font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      margin: 50px 0px 20px;
+      color: #444;
+      padding: 10px;
+    }
+    .advert {
+      width: 100%;
+    }
+    .advert img {
+      width: 99%;
+      max-width: 1100px;
+    }
+    input {
+      padding: 10px;
+      border: none;
+      max-width: 800px;
+      outline: none;
+      width: 100%;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    button {
+      padding: 15px;
+      cursor: pointer;
+      border: none;
+      transition: 0.4s;
+      /* transition: .4s; */
+      background: white;
+      color: teal;
+      border-radius: 10px;
 
-      }
-      nav{
-        padding: 30px;
-        box-shadow: 1px 0px 14px #eee
-
-
-      }
-      h2{
-        font-weight: 100;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        margin: 50px 0px 20px;
-        color: #444;
-        padding: 10px;
-
-      }
-      .advert{
-        width: 100%;
-      }
-      .advert img{
-        width: 99%;
-        max-width: 1100px;
-      }
-      input{
-        padding: 10px;
-        border: none;
-        max-width: 800px;
-        outline: none;
-        width: 100%;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eee;
-      }
-      button{
-        padding: 15px;
-        cursor: pointer;
-        border: none;
-        transition: .4s;
-        /* transition: .4s; */
-        background: white;
-        color: teal;
-        border-radius: 10px;
-      
-        border: 1px solid teal;
-        
-
-      }
-      button:hover{
-        color: white;
-        transition: .4s;
-        background: teal;
-        border: 1px solid white;
-      
-      }
-      button:disabled, button:hover:disabled{
-        color: #bbb;
-        background: #eee;
-      }
-    </style>
-  </head>
-  <body>
-
-    <!--Any html message you want to show to people while they wait the 2 seconds for the redirection.
+      border: 1px solid teal;
+    }
+    button:hover {
+      color: white;
+      transition: 0.4s;
+      background: teal;
+      border: 1px solid white;
+    }
+    button:disabled,
+    button:hover:disabled {
+      color: #bbb;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <!--Any html message you want to show to people while they wait the 2 seconds for the redirection.
   
   Can use an image here or a gif. Can be the same image as above with text on it saying loading your offer now or something.
   
   <img src="./images/prefetch1.jpg" /> -->
   <nav>
-    <img src="./images/color.png" width="300" alt="">
+    <img src="./images/color.png" width="300" alt="" />
   </nav>
   <div class="Container">
-    <form  class="submit">
-
+    <form class="submit">
       <h2>Please enter your email address and phone number to unsubscribe</h2>
-      <div><input placeholder="Enter your email" id="email" name="email"  required="true" type="email"></div>
-      <div><input  name="phone" id="phone" placeholder="Enter your phone number" required="true" type="phone"></div>
+      <div>
+        <input
+          placeholder="Enter your email"
+          id="email"
+          name="email"
+          required="true"
+          type="email"
+        />
+      </div>
+      <div>
+        <input
+          name="phone"
+          id="phone"
+          placeholder="Enter your phone number"
+          required="true"
+          type="phone"
+        />
+      </div>
       <div><button onclick="clickHandler()">Unsubscribe</button></div>
 
-      <div class= "advert"  style="margin-top: 20px">
+      <div class="advert" style="margin-top: 20px;">
         <a href="http://918md-4.com/?a=4679&c=51503&s1=opt-out-page">
-
-          <img src="./images/burger.jpg" alt=""> 
-
+          <img src="./images/burger.jpg" alt="" />
         </a>
       </div>
-
     </form>
   </div>
-  
+
   <script>
-    document.querySelector(".submit").addEventListener("submit", (e)=> {
-      e.preventDefault()
+    document.querySelector(".submit").addEventListener("submit", (e) => {
+      e.preventDefault();
       // clickHandler()
-    })
-    async function clickHandler (){
+    });
+    async function clickHandler() {
+      let phone = document.querySelector("#phone").value;
+      let email = document.querySelector("#email").value;
+      if (!phone || !email) {
+        return alert("Phone and Email are required to optout");
+      }
       document.querySelector("button").disabled = true;
-      document.querySelector("button").innerHTML = `<span> loading </span> <img src="./images/spin.gif" width="13"/>`
-      console.log("clicked")
-     let phone =  document.querySelector("#phone").value
-     let email =  document.querySelector("#email").value
-      let url = `/send-to-power?phone=${phone}&email=${email}`
-     fetch(url) // Call the fetch function passing the url of the API as a parameter
-     .then((resp) => resp.json()) 
-     .then(function(data) {
-       window.location.href =  "/success"
+      document.querySelector(
+        "button"
+      ).innerHTML = `<span> loading </span> <img src="./images/spin.gif" width="13"/>`;
+      console.log("clicked");
 
-    // Create and append the li's to the ul
-    console.log(data,)
-      
-    if(!data.success) alert("There was a problem unsubscribing - please try here later");
-    document.querySelector("button").disabled = false;
-    document.querySelector("button").innerHTML = `Unsubscribe`
+      let url = `/send-to-power?phone=${phone}&email=${email}`;
+      fetch(url) // Call the fetch function passing the url of the API as a parameter
+        .then((resp) => resp.json())
+        .then(function (data) {
+          window.location.href = "/success";
 
-  // alert("There was a problem unsubscribing - please try again later");
+          // Create and append the li's to the ul
+          console.log(data);
 
-    })
-.catch(function(errors) {
-  console.log(errors)
-  console.log("error dey")
-  document.querySelector("button").disabled = false;
-      document.querySelector("button").innerHTML = `Unsubscribe`
-  alert("There was a problem unsubscribing - please try again later");
+          if (!data.success)
+            alert("There was a problem unsubscribing - please try here later");
+          document.querySelector("button").disabled = false;
+          document.querySelector("button").innerHTML = `Unsubscribe`;
 
-    // This is where you run code if the server returns any errors
-});
+          // alert("There was a problem unsubscribing - please try again later");
+        })
+        .catch(function (errors) {
+          console.log(errors);
+          console.log("error dey");
+          document.querySelector("button").disabled = false;
+          document.querySelector("button").innerHTML = `Unsubscribe`;
+          alert("There was a problem unsubscribing - please try again later");
 
-     console.log(phone,email)
+          // This is where you run code if the server returns any errors
+        });
+
+      console.log(phone, email);
     }
   </script>
-  </body>
-  
+</body>
