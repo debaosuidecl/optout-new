@@ -41,6 +41,7 @@ app.post("/api/upload", (req, res) => {
 });
 app.get("/api/blah", (req, res) => {
   res.send("blah");
+  console.log("blah");
 });
 // ROUTE post to /upload
 // DESC upload file to DB
