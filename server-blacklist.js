@@ -40,6 +40,7 @@ app.post("/api/bulkget", async (req, res) => {
   let phoneList = req.body.phones;
   const response = await connectToBlacklist(phoneList);
   res.json(response);
+  console.log(response);
 });
 
 async function DOWNLOADSUPPRESSION() {
