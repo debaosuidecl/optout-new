@@ -37,7 +37,9 @@ app.get("/unsub", async (req, res) => {
 });
 
 app.post("/api/bulkget", async (req, res) => {
+  console.log("hit here");
   let phoneList = req.body.phones;
+
   const response = await connectToBlacklist(phoneList);
   res.json(response);
   console.log(response);
